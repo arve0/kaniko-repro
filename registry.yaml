@@ -69,3 +69,8 @@ spec:
       protocol: TCP
       port: 80
       targetPort: http
+    # uncomment to resolve hanging issue
+    # - name: https
+    #   protocol: TCP
+    #   port: 443
+    #   targetPort: http
