@@ -1,0 +1,35 @@
+deployment.apps/registry unchanged
+persistentvolumeclaim/registry unchanged
+service/registry configured
+
++ kubectl version
+Client Version: version.Info{Major:"1", Minor:"23", GitVersion:"v1.23.1", GitCommit:"86ec240af8cbd1b60bcc4c03c20da9b98005b92e", GitTreeState:"clean", BuildDate:"2021-12-16T11:33:37Z", GoVersion:"go1.17.5", Compiler:"gc", Platform:"darwin/amd64"}
+Server Version: version.Info{Major:"1", Minor:"22", GitVersion:"v1.22.5", GitCommit:"5c99e2ac2ff9a3c549d9ca665e7bc05a3e18f07e", GitTreeState:"clean", BuildDate:"2021-12-16T08:32:32Z", GoVersion:"go1.16.12", Compiler:"gc", Platform:"linux/amd64"}
++ kubectl run kaniko --restart=Never --image=gcr.io/kaniko-project/executor:debug -- --log-format=text --log-timestamp --context=git://github.com/arve0/kaniko-repro --insecure-registry registry.default --destination=registry.default/arve0/kaniko-repro --force
+pod/kaniko created
++ set +x
+.........
++ kubectl logs -f kaniko
+Enumerating objects: 15, done.
+Counting objects:   6% (1/15)Counting objects:  13% (2/15)Counting objects:  20% (3/15)Counting objects:  26% (4/15)Counting objects:  33% (5/15)Counting objects:  40% (6/15)Counting objects:  46% (7/15)Counting objects:  53% (8/15)Counting objects:  60% (9/15)Counting objects:  66% (10/15)Counting objects:  73% (11/15)Counting objects:  80% (12/15)Counting objects:  86% (13/15)Counting objects:  93% (14/15)Counting objects: 100% (15/15)Counting objects: 100% (15/15), done.
+Compressing objects:   9% (1/11)Compressing objects:  18% (2/11)Compressing objects:  27% (3/11)Compressing objects:  36% (4/11)Compressing objects:  45% (5/11)Compressing objects:  54% (6/11)Compressing objects:  63% (7/11)Compressing objects:  72% (8/11)Compressing objects:  81% (9/11)Compressing objects:  90% (10/11)Compressing objects: 100% (11/11)Compressing objects: 100% (11/11), done.
+Total 15 (delta 3), reused 14 (delta 2), pack-reused 0
+time="2022-02-08T21:17:44Z" level=warning msg="kaniko is being run outside of a container. This can have dangerous effects on your system"
+time="2022-02-08T21:20:18Z" level=info msg="Retrieving image manifest debian"
+time="2022-02-08T21:20:18Z" level=info msg="Retrieving image debian from registry index.docker.io"
+time="2022-02-08T21:20:19Z" level=info msg="Built cross stage deps: map[]"
+time="2022-02-08T21:20:19Z" level=info msg="Retrieving image manifest debian"
+time="2022-02-08T21:20:19Z" level=info msg="Returning cached image manifest"
+time="2022-02-08T21:20:19Z" level=info msg="Executing 0 build triggers"
+time="2022-02-08T21:20:19Z" level=info msg="Unpacking rootfs as cmd RUN echo hello > hello.txt requires it."
+time="2022-02-08T21:20:24Z" level=info msg="RUN echo hello > hello.txt"
+time="2022-02-08T21:20:24Z" level=info msg="Taking snapshot of full filesystem..."
+time="2022-02-08T21:20:25Z" level=info msg="cmd: /bin/sh"
+time="2022-02-08T21:20:25Z" level=info msg="args: [-c echo hello > hello.txt]"
+time="2022-02-08T21:20:25Z" level=info msg="Running: [/bin/sh -c echo hello > hello.txt]"
+time="2022-02-08T21:20:25Z" level=info msg="Taking snapshot of full filesystem..."
+time="2022-02-08T21:20:25Z" level=info msg="Pushing image to registry.default/arve0/kaniko-repro"
+time="2022-02-08T21:33:21Z" level=info msg="Pushed image to 1 destinations"
++ cleanup
++ kubectl delete pod kaniko
+pod "kaniko" deleted
